@@ -48,29 +48,66 @@ export const constantRouterMap = [
         meta: { title: '门诊资料上传', icon: 'table' }
       },
       {
-        path: 'table',
+        path: 'doctorUpload',
         name: '医生资料',
-        component: _import('table/index'),
+        component: _import('doctorUpload/index'),
         meta: { title: '医生资料上传', icon: 'table' }
       },
       {
-        path: 'tree',
-        name: 'Tree',
-        component: _import('tree/index'),
+        path: 'brand',
+        name: '品牌介绍',
+        component: _import('brand/index'),
         meta: { title: '品牌介绍', icon: 'tree' }
+      },
+    ]
+  },
+
+  {
+    path: '/project',
+    component: Layout,
+    redirect: '/project/table',
+    children: [
+      {
+        path: 'table',
+        name: '项目管理',
+        component: _import('table/index'),
+        meta: { title: '项目管理', icon: 'form' }
       }
     ]
   },
 
   {
-    path: '/form',
+    path: '/resource',
     component: Layout,
+    redirect: '/resource/table',
+    name: '资源管理',
+    meta: { title: '资源管理', icon: 'example' },
+    children: [
+      {
+        path: 'table',
+        name: '医生管理',
+        component: _import('table/index'),
+        meta: { title: '医生管理', icon: 'form' }
+      },
+      {
+        path: 'clinicdata',
+        name: '患者管理',
+        component: _import('table/index'),
+        meta: { title: '患者管理', icon: 'table' }
+      },
+    ]
+  },
+
+  {
+    path: '/setting',
+    component: Layout,
+    redirect: '/setting/index',
     children: [
       {
         path: 'index',
-        name: 'Form',
+        name: 'News',
         component: _import('form/index'),
-        meta: { title: '门诊管理', icon: 'form' }
+        meta: { title: '消息', icon: 'form' }
       }
     ]
   },

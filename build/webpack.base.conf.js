@@ -25,6 +25,9 @@ module.exports = {
       '@': resolve('src')
     }
   },
+  externals: {
+    'AMap': 'window.AMap'
+  },
   module: {
     rules: [
       // {

@@ -8,13 +8,24 @@
     <el-dropdown class="avatar-container" trigger="click">
       <div class="avatar-wrapper">
         <div class="user-name">{{name}}</div>
-        <img class="user-avatar" :src="avatar+'?imageView2/1/w/80/h/80'">
+        <el-badge is-dot>
+          <img class="user-avatar" :src="avatar+'?imageView2/1/w/80/h/80'">
+        </el-badge>
         <i class="el-icon-caret-bottom"></i>
       </div>
       <el-dropdown-menu class="user-dropdown" slot="dropdown">
         <router-link class="inlineBlock" to="/">
           <el-dropdown-item>
             首页
+          </el-dropdown-item>
+        </router-link>
+        <router-link class="inlineBlock" to="/setting/index">
+          <el-dropdown-item>
+            <span class="news">
+              <el-badge is-dot>
+                消息
+              </el-badge>
+            </span>
           </el-dropdown-item>
         </router-link>
         <el-dropdown-item divided>
@@ -97,7 +108,6 @@ export default {
     position: absolute;
     right: 35px;
     .avatar-wrapper {
-      margin-top: 10px;
       position: relative;
       overflow: hidden;
       padding-right: 20px;
@@ -106,7 +116,7 @@ export default {
         float: left;
         height: 60px;
         line-height: 45px;
-        margin-right: 20px;
+        margin: 10px 20px 0 0;
       }
       .user-avatar {
         cursor: pointer;
@@ -119,11 +129,16 @@ export default {
         cursor: pointer;
         position: absolute;
         right: 0;
-        top: 25px;
+        top: 35px;
         font-size: 12px;
       }
     }
   }
+}
+.news{
+  display: block;
+  line-height: 16px;
+  padding: 10px 0;
 }
 </style>
 
