@@ -21,8 +21,13 @@
       <el-form-item label="详细地址:">
         <el-input v-model="form.address"></el-input>
       </el-form-item>
-      <el-form-item label="门诊电话:">
-        <el-input v-model="form.phone"></el-input>
+      <el-form-item label="选择位置:">
+        <el-col :span="3">
+          <div v-model="form.lnglatXY" @click="onMap" class="getMap">点击获取详细位置</div>
+        </el-col>
+        <el-col :span="10" v-if="mapVisible">
+          <loadMap></loadMap>
+        </el-col>
       </el-form-item>
       <el-form-item label="营业时间:">
         <el-col :span="11">
@@ -48,9 +53,11 @@
 </template>
 <script>
   import uploadImg from '@/components/imgUpload/index'
+  import loadMap from '@/views/map/index'
   export default {
     components: {
-      uploadImg
+      uploadImg,
+      loadMap
     },
     data() {
       return {
@@ -63,10 +70,14 @@
           phone: '',
           date1: '',
           date2: '',
-        }
+        },
+        mapVisible: false,
       }
     },
     methods: {
+      onMap() {
+        this.mapVisible = !this.mapVisible;
+      },
       imageShow(arr) {
         console.log(arr);
       },
@@ -89,6 +100,12 @@
 <style scoped>
   .line{
     text-align: center;
+  }
+  .getMap{
+    padding: 2px 20px;
+    border: 1px solid #d8dce5;
+    border-radius: 4px;
+    cursor: pointer;
   }
 </style>
 

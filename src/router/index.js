@@ -59,20 +59,12 @@ export const constantRouterMap = [
         component: _import('brand/index'),
         meta: { title: '品牌介绍', icon: 'tree' }
       },
-    ]
-  },
-
-  {
-    path: '/project',
-    component: Layout,
-    redirect: '/project/table',
-    children: [
       {
-        path: 'table',
-        name: '项目管理',
-        component: _import('table/index'),
-        meta: { title: '项目管理', icon: 'form' }
-      }
+        path: 'map',
+        name: '诊所位置',
+        component: _import('map/index'),
+        meta: { title: '选择地图', icon: 'tree' }
+      },
     ]
   },
 
@@ -83,6 +75,12 @@ export const constantRouterMap = [
     name: '资源管理',
     meta: { title: '资源管理', icon: 'example' },
     children: [
+      {
+        path: 'project',
+        name: '项目管理',
+        component: _import('table/index'),
+        meta: { title: '项目管理', icon: 'form' }
+      },
       {
         path: 'table',
         name: '医生管理',
