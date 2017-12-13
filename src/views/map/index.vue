@@ -9,6 +9,7 @@ console.log(AMap)
 export default {
   methods: {
     loadmap(){
+      const that = this;
       const map = new AMap.Map('map-container', {
         zoom: 15,
         center: [116.39, 39.9]
@@ -23,12 +24,17 @@ export default {
         })
         map.on('click',function(e){
             marker.setPosition(e.lnglat);
-            console.log(e.lnglat);
-            geocoder.getAddress(e.lnglat,function(status,result){
+            // console.log(e.lnglat);
+            let lnglatXY = JSON.stringify({lng: e.lnglat.lng, lat: e.lnglat.lat});
+            that.$emit('successLXY', lnglatXY);
+            /* geocoder.getAddress(e.lnglat,function(status,result){
               if(status=='complete'){
-                 console.log(result.regeocode.formattedAddress);
+                 // console.log(result.regeocode.formattedAddress);
+                 let lnglatXY = result.regeocode.formattedAddress;
+                 console.log(lnglatXY);
+                 that.$emit('successLXY', lnglatXY);
               }
-            })
+            }) */
         })
       });
     }

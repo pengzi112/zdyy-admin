@@ -21,12 +21,12 @@
       <el-form-item label="详细地址:">
         <el-input v-model="form.address"></el-input>
       </el-form-item>
-      <el-form-item label="选择位置:">
-        <el-col :span="3">
-          <div v-model="form.lnglatXY" @click="onMap" class="getMap">点击获取详细位置</div>
+      <el-form-item label="经纬度:">
+        <el-col :span="4">
+          <el-input v-model="form.lnglatXY" @click.native="onMap" class="getMap" readonly="readonly"></el-input>
         </el-col>
-        <el-col :span="10" v-if="mapVisible">
-          <loadMap></loadMap>
+        <el-col :span="10" :offset="1" v-if="mapVisible">
+          <loadMap @successLXY="mapLocation"></loadMap>
         </el-col>
       </el-form-item>
       <el-form-item label="营业时间:">
@@ -67,6 +67,7 @@
           city: '',
           country: '',
           address: '',
+          lnglatXY: '点击获取经纬度',
           phone: '',
           date1: '',
           date2: '',
@@ -77,6 +78,9 @@
     methods: {
       onMap() {
         this.mapVisible = !this.mapVisible;
+      },
+      mapLocation(msg) {
+        this.form.lnglatXY = msg;
       },
       imageShow(arr) {
         console.log(arr);
@@ -97,15 +101,12 @@
   }
 </script>
 
-<style scoped>
+<style>
   .line{
     text-align: center;
   }
-  .getMap{
-    padding: 2px 20px;
-    border: 1px solid #d8dce5;
-    border-radius: 4px;
-    cursor: pointer;
+  .getMap .el-input__inner{
+    cursor: pointer !important;
   }
 </style>
 

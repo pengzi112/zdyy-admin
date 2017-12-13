@@ -54,16 +54,16 @@ export const constantRouterMap = [
         meta: { title: '医生资料上传', icon: 'table' }
       },
       {
+        path: 'project',
+        name: '项目上传',
+        component: _import('project/index'),
+        meta: { title: '项目上传', icon: 'tree' }
+      },
+      {
         path: 'brand',
         name: '品牌介绍',
         component: _import('brand/index'),
         meta: { title: '品牌介绍', icon: 'tree' }
-      },
-      {
-        path: 'map',
-        name: '诊所位置',
-        component: _import('map/index'),
-        meta: { title: '选择地图', icon: 'tree' }
       },
     ]
   },
