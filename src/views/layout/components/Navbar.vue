@@ -44,7 +44,7 @@ import Hamburger from '@/components/Hamburger'
 export default {
   data () {
     return {
-      name: '孙文朋'
+      name: '劲松口腔医院'
     }
   },
   components: {
