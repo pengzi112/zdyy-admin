@@ -4,9 +4,9 @@ import { getToken, setToken, removeToken } from '@/utils/auth'
 const user = {
   state: {
     token: getToken(),
-    name: '',
-    avatar: '',
-    roles: []
+    name: 'pengzi',
+    avatar: 'admin',
+    roles: ['superAdmin']
   },
 
   mutations: {
@@ -27,12 +27,12 @@ const user = {
   actions: {
     // 登录
     Login({ commit }, userInfo) {
-      const username = userInfo.username.trim()
+      // const username = userInfo.phone.trim()
+      const username = userInfo.username
       return new Promise((resolve, reject) => {
         login(username, userInfo.password).then(response => {
-          const data = response.data
-          setToken(data.token)
-          commit('SET_TOKEN', data.token)
+          setToken(response.token)
+          commit('SET_TOKEN', response.token)
           resolve()
         }).catch(error => {
           reject(error)

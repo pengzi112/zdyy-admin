@@ -28,7 +28,7 @@
 
 <script>
 import { isvalidUsername } from '@/utils/validate'
-
+import axios from 'axios'
 export default {
   name: 'login',
   data() {

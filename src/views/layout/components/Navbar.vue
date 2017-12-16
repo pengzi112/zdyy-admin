@@ -9,7 +9,7 @@
       <div class="avatar-wrapper">
         <div class="user-name">{{name}}</div>
         <el-badge is-dot>
-          <img class="user-avatar" :src="avatar+'?imageView2/1/w/80/h/80'">
+          <img class="user-avatar" src="http://pic32.photophoto.cn/20140919/0007020154404428_b.jpg">
         </el-badge>
         <i class="el-icon-caret-bottom"></i>
       </div>

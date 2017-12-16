@@ -76,21 +76,21 @@ export const constantRouterMap = [
     meta: { title: '资源管理', icon: 'example' },
     children: [
       {
-        path: 'project',
+        path: 'projectList',
         name: '项目管理',
-        component: _import('table/index'),
+        component: _import('projectList/index'),
         meta: { title: '项目管理', icon: 'form' }
       },
       {
-        path: 'table',
+        path: 'doctorList',
         name: '医生管理',
-        component: _import('table/index'),
+        component: _import('doctorList/index'),
         meta: { title: '医生管理', icon: 'form' }
       },
       {
-        path: 'clinicdata',
+        path: 'patientList',
         name: '患者管理',
-        component: _import('table/index'),
+        component: _import('patientList/index'),
         meta: { title: '患者管理', icon: 'table' }
       },
     ]
