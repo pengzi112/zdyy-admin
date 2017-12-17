@@ -54,6 +54,8 @@
 <script>
   import uploadImg from '@/components/imgUpload/index'
   import loadMap from '@/views/map/index'
+  import { getToken } from '@/utils/auth'
+  import { getArea } from '@/api/clinic'
   export default {
     components: {
       uploadImg,
@@ -75,7 +77,15 @@
         mapVisible: false,
       }
     },
+    created() {
+      this.fetchData();
+    },
     methods: {
+      fetchData() {
+        getArea('0').then(response => {
+          console.log(response)
+        })
+      },
       onMap() {
         this.mapVisible = !this.mapVisible;
       },
