@@ -8,7 +8,15 @@ const service = axios.create({
   baseURL: process.env.BASE_API, // api的base_url
   timeout: 15000                  // 请求超时时间
 })
-
+// 以formdata方式提交
+service.defaults.headers = {'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'};
+service.defaults.transformRequest = [function (data) {
+ let newData = '';
+ for (let k in data) {
+   newData += encodeURIComponent(k) + '=' + encodeURIComponent(data[k]) + '&'
+ }
+ return newData
+}]
 // request拦截器
 service.interceptors.request.use(config => {
   if (store.getters.token) {
@@ -28,8 +36,8 @@ service.interceptors.response.use(
   * code为非20000是抛错 可结合自己业务进行修改
   */
     const res = response.data
-    console.log(res)
-    if (res.errorCode !== 200) {
+    // console.log(response)
+    if (res.errorCode !== 200 && res.errorCode !== undefined) {
       Message({
         message: res.msg,
         type: 'error',

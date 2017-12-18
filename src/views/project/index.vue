@@ -2,12 +2,14 @@
   <div class="app-container">
     <el-form ref="form" :model="form" label-width="120px">
       <el-form-item label="项目分类:">
-        <el-checkbox-group v-model="form.type">
-          <el-checkbox label="拔牙" name="type"></el-checkbox>
-          <el-checkbox label="正畸" name="type"></el-checkbox>
-          <el-checkbox label="牙齿美白" name="type"></el-checkbox>
-          <el-checkbox label="补牙" name="type"></el-checkbox>
-        </el-checkbox-group>
+        <el-tree
+          :data="data"
+          :props="defaultProps"
+          :highlight-current="true"
+          :show-checkbox="true"
+          accordion
+          @node-click="handleNodeClick">
+        </el-tree>
       </el-form-item>
       <el-form-item label="原价:">
         <el-input v-model="form.beforePrice"></el-input>
@@ -38,10 +40,58 @@
           beforePrice: '',
           afterPrice: '',
           type: [],
+        },
+        data: [{
+          label: '铸造支架全口类',
+          disabled: true,
+          children: [{
+            label: '拔牙',
+            disabled: true,
+            children: [{
+              label: '上牙',
+            }, {
+              label: '下牙'
+            }]
+          }]
+        }, {
+          label: '烤瓷类',
+          disabled: true,
+          children: [{
+            label: '二级 2-1',
+            disabled: true,
+            children: [{
+              label: '三级 2-1-1'
+            }]
+          }, {
+            label: '二级 2-2',
+            disabled: true,
+            children: [{
+              label: '三级 2-2-1'
+            }]
+          }]
+        }, {
+          label: '牙齿美容类',
+          disabled: true,
+          children: [{
+            label: '二级 3-1',
+            disabled: true,
+            children: [{
+              label: '三级 3-1-1'
+            }]
+          }, {
+            label: '二级 3-2',
+          }]
+        }],
+        defaultProps: {
+          children: 'children',
+          label: 'label'
         }
       }
     },
     methods: {
+      handleNodeClick(data) {
+        console.log(data);
+      },
       onSubmit() {
         this.$message('submit!')
       },
