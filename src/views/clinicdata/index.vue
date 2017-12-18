@@ -5,22 +5,37 @@
         <el-input v-model="form.name"></el-input>
       </el-form-item>
       <el-form-item label="所在地区:" required>
-        <el-select v-model="form.provice_id" placeholder="请选择省" @change="getCity" style="margin-right: 30px;">
-          <el-option :label="item.cityName" :value="item.codeid" :key="item.codeid" v-for="(item, index) in provinceList"></el-option>
-        </el-select>
-        <el-select v-model="form.city_id" placeholder="请选择市" @change="getCounty" style="margin-right: 30px;">
-          <el-option :label="item.cityName" :value="item.codeid" :key="item.codeid" v-for="(item, index) in cityList"></el-option>
-        </el-select>
-        <el-select v-model="form.area_id" placeholder="请选择区">
-          <el-option :label="item.cityName" :value="item.codeid" :key="item.codeid" v-for="(item, index) in areaList"></el-option>
-        </el-select>
+        <el-col :span="6">
+          <el-form-item prop="provice_id">
+            <el-select v-model="form.provice_id" placeholder="请选择省" @change="getCity" style="margin-right: 30px;">
+              <el-option :label="item.cityName" :value="item.codeid" :key="item.codeid" v-for="(item, index) in provinceList"></el-option>
+            </el-select>
+          </el-form-item>
+        </el-col>
+        <el-col :span="6">
+          <el-form-item prop="city_id">
+            <el-select v-model="form.city_id" placeholder="请选择市" @change="getCounty" style="margin-right: 30px;">
+              <el-option :label="item.cityName" :value="item.codeid" :key="item.codeid" v-for="(item, index) in cityList"></el-option>
+            </el-select>
+          </el-form-item>
+        </el-col>
+        <el-col :span="6">
+          <el-form-item prop="area_id">
+            <el-select v-model="form.area_id" placeholder="请选择区">
+              <el-option :label="item.cityName" :value="item.codeid" :key="item.codeid" v-for="(item, index) in areaList"></el-option>
+            </el-select>
+          </el-form-item>
+        </el-col>
       </el-form-item>
       <el-form-item label="详细地址:" prop="detail">
         <el-input v-model="form.detail"></el-input>
       </el-form-item>
+      <el-form-item label="门诊电话:" prop="phone">
+        <el-input v-model="form.phone"></el-input>
+      </el-form-item>
       <el-form-item label="经纬度:" prop="jingwei">
         <el-col :span="4">
-          <el-input v-model="form.jingwei" @click.native="onMap" class="getMap" readonly="readonly"></el-input>
+          <el-input v-model="form.jingwei" @click.native="onMap" class="getMap" readonly="readonly" placeholder="点击获取经纬度"></el-input>
         </el-col>
         <el-col :span="10" :offset="1" v-if="mapVisible">
           <loadMap @successLXY="mapLocation"></loadMap>
@@ -28,17 +43,21 @@
       </el-form-item>
       <el-form-item label="营业时间:" required>
         <el-col :span="6">
-          <el-time-picker type="fixed-time" placeholder="选择时间" v-model="form.time1" style="width: 100%;"></el-time-picker>
+          <el-form-item prop="time1">
+            <el-time-picker type="fixed-time" placeholder="选择时间" v-model="form.time1" style="width: 100%;"></el-time-picker>
+          </el-form-item>
         </el-col>
         <el-col class="line" :span="2">-</el-col>
         <el-col :span="6">
-          <el-time-picker type="fixed-time" placeholder="选择时间" v-model="form.time2" style="width: 100%;"></el-time-picker>
+          <el-form-item prop="time2">
+            <el-time-picker type="fixed-time" placeholder="选择时间" v-model="form.time2" style="width: 100%;"></el-time-picker>
+          </el-form-item>
         </el-col>
       </el-form-item>
       <el-form-item label="门诊靓照:" prop="clinic_img">
         <uploadImg :maxLength='6' class="editor-upload-btn" @successCBK="imageShow"></uploadImg>
       </el-form-item>
-      <el-form-item label="门诊logo:" prop="clinic_logo">
+      <el-form-item label="门诊logo:" prop="clinic_logoRule">
         <uploadImg :maxLength='1' class="editor-upload-btn" @successCBK="imageLogo"></uploadImg>
       </el-form-item>
       <el-form-item>
@@ -52,9 +71,16 @@
   import uploadImg from '@/components/imgUpload/index'
   import loadMap from '@/views/map/index'
   import { getToken } from '@/utils/auth'
-  import { getArea } from '@/api/clinic'
+  import { parseTime } from '@/utils/index'
+  import { getArea, clinicUpload } from '@/api/clinic'
+  import ElFormItem from "../../../node_modules/element-ui/packages/form/src/form-item";
+  import ElCol from "element-ui/packages/col/src/col";
+  import ElForm from "../../../node_modules/element-ui/packages/form/src/form";
   export default {
     components: {
+      ElForm,
+      ElCol,
+      ElFormItem,
       uploadImg,
       loadMap
     },
@@ -66,11 +92,13 @@
           city_id: '',
           area_id: '',
           detail: '',
-          jingwei: '点击获取经纬度',
+          phone: '',
+          jingwei: '',
           phone: '',
           business_time: '',
           clinic_img: [],
           clinic_logo: {},
+          clinic_logoRule: [], // 验证logo是否上传
           time1: '',
           time2: '',
         },
@@ -78,20 +106,24 @@
           name: [
             {required: true, message: '请输入诊所名称', trigger: 'blur'},
           ],
+          phone: [
+            {required: true, message: '请输入诊所电话', trigger: 'blur'},
+            { min: 11, max: 11, message: '请输入正确号码', trigger: 'blur' }
+          ],
           provice_id: [
-            { required: true, message: '请选择省份', trigger: 'change' }
+            {type: 'number', required: true, message: '请选择省份', trigger: 'change' }
           ],
           city_id: [
-            { required: true, message: '请选择市', trigger: 'change' }
+            {type: 'number', required: true, message: '请选择市', trigger: 'change' }
           ],
           area_id: [
-            { required: true, message: '请选择县/区', trigger: 'change' }
+            {type: 'number', required: true, message: '请选择县/区', trigger: 'change' }
           ],
           clinic_img: [
             {type: 'array', required: true, message: '请选择靓照', trigger: 'change'}
           ],
-          clinic_logo: [
-            {required: true, message: '请选择logo', trigger: 'change'}
+          clinic_logoRule: [
+            {type: 'array', required: true, message: '请选择logo', trigger: 'change'}
           ],
           time1: [
             { type: 'date', required: true, message: '请选择初始时间', trigger: 'change' }
@@ -106,7 +138,7 @@
             { required: true, message: '请输入详细地址', trigger: 'blur' }
           ],
           jingwei: [
-            { required: true, message: '请选择经纬度', trigger: 'change' }
+            { required: true, message: '请选择经纬度', trigger: 'blur' }
           ],
         },
         mapVisible: false, // 地图显示隐藏
@@ -147,13 +179,23 @@
         }
       },
       imageLogo(arr) {
+        this.form.clinic_logoRule.push(arr[0].file);
         this.form.clinic_logo = arr[0].file;
       },
       onSubmit(formName) {
         this.$refs[formName].validate((valid) => {
           if(valid) {
             let para = Object.assign({}, this.form);
+            let timeStart = parseTime(para.time1);
+            let timeEnd = parseTime(para.time2);
+            para.business_time = timeStart.slice(11) + ',' + timeEnd.slice(11);
+            delete para['time1'];
+            delete para['time2'];
+            delete para['clinic_logoRule'];
             console.log(para);
+            clinicUpload(para).then(response => {
+              console.log(response);
+            });
           }
         })
       },
