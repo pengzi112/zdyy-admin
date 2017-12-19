@@ -1,31 +1,31 @@
 <template>
   <div class="app-container">
-    <el-form ref="form" :model="form" label-width="120px">
-      <el-form-item label="姓名:">
+    <el-form ref="form" :rules="rules" :model="form" label-width="120px">
+      <el-form-item label="姓名：" prop="name">
         <el-input v-model="form.name"></el-input>
       </el-form-item>
-      <el-form-item label="性别:">
+      <el-form-item label="性别：" prop="sex">
         <el-radio-group v-model="form.sex">
-          <el-radio label="男"></el-radio>
-          <el-radio label="女"></el-radio>
+          <el-radio label="男" value="1"></el-radio>
+          <el-radio label="女" value="0"></el-radio>
         </el-radio-group>
       </el-form-item>
-      <el-form-item label="职称:">
-        <el-input v-model="form.position"></el-input>
+      <el-form-item label="职称：" prop="title">
+        <el-input v-model="form.title"></el-input>
       </el-form-item>
-      <el-form-item label="简介:">
-        <el-input type="textarea" v-model="form.introduce"></el-input>
+      <el-form-item label="简介：" prop="describe">
+        <el-input type="textarea" v-model="form.describe"></el-input>
       </el-form-item>
-      <el-form-item label="擅长：">
-        <el-checkbox-group v-model="form.skilled">
-          <el-checkbox :label="item.id" :key="item.id" v-for="(item,index) in skillLists" name="skilled">{{item.skill}}</el-checkbox>
+      <el-form-item label="擅长：" prop="label">
+        <el-checkbox-group v-model="form.label">
+          <el-checkbox :label="item.id" :key="item.id" v-for="(item,index) in skillLists" name="label">{{item.name}}</el-checkbox>
         </el-checkbox-group>
       </el-form-item>
-      <el-form-item label="照片:">
+      <el-form-item label="头像：" prop="doctor_headRule">
         <uploadImg :maxLength='3' class="editor-upload-btn" @successCBK="imageShow"></uploadImg>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click="onSubmit">保存</el-button>
+        <el-button type="primary" @click="onSubmit('form')">保存</el-button>
         <el-button @click="onCancel">取消</el-button>
       </el-form-item>
     </el-form>
@@ -33,6 +33,7 @@
 </template>
 <script>
   import uploadImg from '@/components/imgUpload/index'
+  import { getProject } from '@/api/clinic'
   export default {
     components: {
       uploadImg
@@ -42,22 +43,58 @@
         form: {
           name: '',
           sex: '',
-          position: '',
-          introduce: '',
-          skilled: [],
+          title: '',
+          describe: '',
+          doctor_head: {},
+          label: [],
+          doctor_headRule: [], // 验证头像是否上传 
         },
-        skillLists: [{skill: '牙齿矫正', id: '0'}, {skill: '洗牙', id: '1'}, {skill: '拔牙', id: '2'}, {skill: '烤瓷'}, {skill: '牙齿整形', id: '3'}]
+        rules: {
+          name: [
+            {required: true, message: '请输入医生姓名', trigger: 'blur'},
+          ],
+          sex: [
+            {required: true, message: '请选择性别', trigger: 'change' }
+          ],
+          title: [
+            {required: true, message: '请输入医生职称', trigger: 'blur'},
+          ],
+          describe: [
+            {required: true, message: '请输入医生简介', trigger: 'blur'},
+          ],
+          label: [
+            {type: 'array', required: true, message: '请选择医生擅长项目', trigger: 'change'},
+          ],
+          doctor_headRule: [
+            {type: 'array', required: true, message: '请选择医生头像', trigger: 'change'}
+          ],
+        },
+        skillLists: []
       }
     },
+    created() {
+      this.fetchData();
+    },
     methods: {
+      fetchData() {
+        getProject().then(response => {
+          this.skillLists = response;
+        });
+      },
       imageShow(arr) {
-        console.log(arr);
+        this.form.doctor_headRule.push(arr[0].file);
+        this.form.doctor_head = arr[0].file;
       },
-      imageLogo(arr) {
-        console.log(arr);
-      },
-      onSubmit() {
-        this.$message('submit!')
+      onSubmit(formName) {
+        this.$refs[formName].validate((valid) => {
+          if(valid) {
+            let para = Object.assign({}, this.form);
+            delete para['doctor_headRule'];
+            console.log(para);
+            let paraFormData = new FormData();
+            paraFormData.append('name', para.name);
+          }
+        })
       },
       onCancel() {
         this.$message({

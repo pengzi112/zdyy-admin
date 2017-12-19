@@ -1,25 +1,25 @@
 <template>
   <div class="app-container">
     <el-form ref="form" :rules="rules" :model="form" label-width="120px">
-      <el-form-item label="门诊名称:" prop="name">
+      <el-form-item label="门诊名称：" prop="name">
         <el-input v-model="form.name"></el-input>
       </el-form-item>
-      <el-form-item label="所在地区:" required>
-        <el-col :span="6">
+      <el-form-item label="所在地区：" required>
+        <el-col :span="5">
           <el-form-item prop="provice_id">
             <el-select v-model="form.provice_id" placeholder="请选择省" @change="getCity" style="margin-right: 30px;">
               <el-option :label="item.cityName" :value="item.codeid" :key="item.codeid" v-for="(item, index) in provinceList"></el-option>
             </el-select>
           </el-form-item>
         </el-col>
-        <el-col :span="6">
+        <el-col :span="5">
           <el-form-item prop="city_id">
             <el-select v-model="form.city_id" placeholder="请选择市" @change="getCounty" style="margin-right: 30px;">
               <el-option :label="item.cityName" :value="item.codeid" :key="item.codeid" v-for="(item, index) in cityList"></el-option>
             </el-select>
           </el-form-item>
         </el-col>
-        <el-col :span="6">
+        <el-col :span="5">
           <el-form-item prop="area_id">
             <el-select v-model="form.area_id" placeholder="请选择区">
               <el-option :label="item.cityName" :value="item.codeid" :key="item.codeid" v-for="(item, index) in areaList"></el-option>
@@ -27,13 +27,13 @@
           </el-form-item>
         </el-col>
       </el-form-item>
-      <el-form-item label="详细地址:" prop="detail">
+      <el-form-item label="详细地址：" prop="detail">
         <el-input v-model="form.detail"></el-input>
       </el-form-item>
-      <el-form-item label="门诊电话:" prop="phone">
+      <el-form-item label="门诊电话：" prop="phone">
         <el-input v-model="form.phone"></el-input>
       </el-form-item>
-      <el-form-item label="经纬度:" prop="jingwei">
+      <el-form-item label="经纬度：" prop="jingwei">
         <el-col :span="4">
           <el-input v-model="form.jingwei" @click.native="onMap" class="getMap" readonly="readonly" placeholder="点击获取经纬度"></el-input>
         </el-col>
@@ -41,7 +41,7 @@
           <loadMap @successLXY="mapLocation"></loadMap>
         </el-col>
       </el-form-item>
-      <el-form-item label="营业时间:" required>
+      <el-form-item label="营业时间：" required>
         <el-col :span="6">
           <el-form-item prop="time1">
             <el-time-picker type="fixed-time" placeholder="选择时间" v-model="form.time1" style="width: 100%;"></el-time-picker>
@@ -54,15 +54,14 @@
           </el-form-item>
         </el-col>
       </el-form-item>
-      <el-form-item label="门诊靓照:" prop="clinic_img">
+      <el-form-item label="门诊靓照：" prop="clinic_img">
         <uploadImg :maxLength='6' class="editor-upload-btn" @successCBK="imageShow"></uploadImg>
       </el-form-item>
-      <el-form-item label="门诊logo:" prop="clinic_logoRule">
+      <el-form-item label="门诊logo：" prop="clinic_logoRule">
         <uploadImg :maxLength='1' class="editor-upload-btn" @successCBK="imageLogo"></uploadImg>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="onSubmit('form')">保存</el-button>
-        <el-button @click="onCancel">取消</el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -192,19 +191,32 @@
             delete para['time1'];
             delete para['time2'];
             delete para['clinic_logoRule'];
-            console.log(para);
-            clinicUpload(para).then(response => {
+            let param = new FormData();
+            param.append('name', para.name);
+            param.append('provice_id', para.provice_id);
+            param.append('city_id', para.city_id);
+            param.append('area_id', para.area_id);
+            param.append('detail', para.detail);
+            param.append('jingwei', para.jingwei);
+            param.append('phone', para.phone);
+            param.append('business_time', para.business_time);
+            for (var i = 0; i < para.clinic_img.length; i++) {
+              param.append('clinic_img[]', para.clinic_img[i]);
+            }
+            param.append('clinic_logo', para.clinic_logo);
+            clinicUpload(param).then(response => {
               console.log(response);
+              if (response.errorCode === 200) {
+                this.$message({
+                  message: '保存成功！',
+                  type: 'success',
+                  duration: 1000
+                });
+              }
             });
           }
         })
       },
-      onCancel() {
-        this.$message({
-          message: 'cancel!',
-          type: 'warning'
-        })
-      }
     }
   }
 </script>
