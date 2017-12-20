@@ -1,23 +1,18 @@
 <template>
   <div class="app-container">
     <el-form ref="form" :model="form" label-width="120px">
-      <el-form-item label="项目分类:">
-        <el-tree
-          :data="data"
-          :props="defaultProps"
-          :highlight-current="true"
-          :show-checkbox="true"
-          accordion
-          @node-click="handleNodeClick">
-        </el-tree>
+      <el-form-item label="项目分类：" prop="label">
+        <el-radio-group v-model="form.label">
+          <el-radio :label="item.id" :key="item.id" v-for="(item,index) in skillLists" name="label">{{item.name}}</el-radio>
+        </el-radio-group>
       </el-form-item>
-      <el-form-item label="原价:">
+      <el-form-item label="原价：">
         <el-input v-model="form.beforePrice"></el-input>
       </el-form-item>
-      <el-form-item label="折扣价:">
+      <el-form-item label="折扣价：">
         <el-input v-model="form.afterPrice"></el-input>
       </el-form-item>
-      <el-form-item label="项目照片:">
+      <el-form-item label="项目照片：">
         <uploadImg :maxLength='6' @successCBK="imageShow"></uploadImg>
       </el-form-item>
       <el-form-item>
@@ -30,6 +25,7 @@
 
 <script>
   import uploadImg from '@/components/imgUpload/index'
+  import { getProject } from '@/api/clinic'
   export default {
     components: {
       uploadImg
@@ -37,60 +33,22 @@
     data() {
       return {
         form: {
+          label: '',
           beforePrice: '',
           afterPrice: '',
           type: [],
         },
-        data: [{
-          label: '铸造支架全口类',
-          disabled: true,
-          children: [{
-            label: '拔牙',
-            disabled: true,
-            children: [{
-              label: '上牙',
-            }, {
-              label: '下牙'
-            }]
-          }]
-        }, {
-          label: '烤瓷类',
-          disabled: true,
-          children: [{
-            label: '二级 2-1',
-            disabled: true,
-            children: [{
-              label: '三级 2-1-1'
-            }]
-          }, {
-            label: '二级 2-2',
-            disabled: true,
-            children: [{
-              label: '三级 2-2-1'
-            }]
-          }]
-        }, {
-          label: '牙齿美容类',
-          disabled: true,
-          children: [{
-            label: '二级 3-1',
-            disabled: true,
-            children: [{
-              label: '三级 3-1-1'
-            }]
-          }, {
-            label: '二级 3-2',
-          }]
-        }],
-        defaultProps: {
-          children: 'children',
-          label: 'label'
-        }
+        skillLists: []
       }
     },
+    created() {
+      this.fetchData();
+    },
     methods: {
-      handleNodeClick(data) {
-        console.log(data);
+      fetchData() {
+        getProject().then(response => {
+          this.skillLists = response;
+        });
       },
       onSubmit() {
         this.$message('submit!')

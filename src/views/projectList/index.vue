@@ -1,13 +1,11 @@
 <template>
   <div class="app-container">
-    <el-form ref="form" :model="form" label-width="120px">
+    <el-form :inline="true" ref="form" :model="form" label-width="100px">
       <el-row>
-        <el-col :span="5">
+        <el-col :span="24">
           <el-form-item label="项目搜索:">
             <el-input type="input" v-model="form.name"></el-input>
           </el-form-item>
-        </el-col>
-        <el-col :span="12">
           <el-form-item>
             <el-button type="primary" @click="onSearch">查询</el-button>
           </el-form-item>

@@ -205,7 +205,6 @@
             }
             param.append('clinic_logo', para.clinic_logo);
             clinicUpload(param).then(response => {
-              console.log(response);
               if (response.errorCode === 200) {
                 this.$message({
                   message: '保存成功！',

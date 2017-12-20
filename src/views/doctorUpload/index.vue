@@ -22,18 +22,18 @@
         </el-checkbox-group>
       </el-form-item>
       <el-form-item label="头像：" prop="doctor_headRule">
-        <uploadImg :maxLength='3' class="editor-upload-btn" @successCBK="imageShow"></uploadImg>
+        <uploadImg :maxLength='1' ref="doctorHead" class="editor-upload-btn" @successCBK="imageShow"></uploadImg>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="onSubmit('form')">保存</el-button>
-        <el-button @click="onCancel">取消</el-button>
+        <el-button @click="onCancel('form')">取消</el-button>
       </el-form-item>
     </el-form>
   </div>
 </template>
 <script>
   import uploadImg from '@/components/imgUpload/index'
-  import { getProject } from '@/api/clinic'
+  import { getProject, doctorUpload } from '@/api/clinic'
   export default {
     components: {
       uploadImg
@@ -93,14 +93,31 @@
             console.log(para);
             let paraFormData = new FormData();
             paraFormData.append('name', para.name);
+            paraFormData.append('sex', para.sex);
+            paraFormData.append('title', para.title);
+            paraFormData.append('describe', para.describe);
+            paraFormData.append('doctor_head', para.doctor_head);
+            for (var i = 0; i < para.label.length; i++) {
+              paraFormData.append('label[]', para.label[i]);
+            }
+            doctorUpload(paraFormData).then(response => {
+              if (response.errorCode === 200) {
+                this.$message({
+                  message: '保存成功！',
+                  type: 'success',
+                  duration: 1000
+                });
+              }
+            })
           }
         })
       },
-      onCancel() {
+      onCancel(formName) {
         this.$message({
           message: 'cancel!',
           type: 'warning'
-        })
+        });
+        this.$refs[formName].resetFields();
       }
     }
   }

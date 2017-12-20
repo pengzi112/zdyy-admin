@@ -23,3 +23,13 @@ export function getProject() {
     method: 'get',
   })
 }
+
+export function doctorUpload(data) {
+  let config = { 
+    headers:{'Content-Type':'multipart/form-data'},
+    transformRequest:[function (defaultData) {
+      return defaultData
+    }]
+  };
+  return request.post('/doctor/index', data, config)
+}
