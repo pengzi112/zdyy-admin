@@ -5,7 +5,7 @@
     </div>
     <hamburger class="hamburger-container" :toggleClick="toggleSideBar" :isActive="sidebar.opened"></hamburger>
     <breadcrumb></breadcrumb>
-    <el-dropdown class="avatar-container" trigger="click">
+    <el-dropdown class="avatar-container">
       <div class="avatar-wrapper">
         <div class="user-name">{{name}}</div>
         <el-badge is-dot>

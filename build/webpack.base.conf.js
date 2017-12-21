@@ -47,7 +47,7 @@ module.exports = {
       {
         test: /\.js$/,
         loader: 'babel-loader',
-        include: [resolve('src'), resolve('test')]
+        include: [resolve('src'), resolve('test'), resolve('/node_modules/.2.0.5@element-ui/src'), resolve('/node_modules/.2.0.5@element-ui/packages')]
       },
       {
         test: /\.svg$/,
