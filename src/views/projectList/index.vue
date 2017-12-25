@@ -12,7 +12,7 @@
         </el-col>
       </el-row>
     </el-form>
-    <el-table :data="list" v-loading.body="listLoading" element-loading-text="Loading" border fit highlight-current-row>
+    <el-table :data="projectList" v-loading.body="listLoading" element-loading-text="Loading" border fit highlight-current-row>
       <el-table-column align="center" label='序号' width="95">
         <template slot-scope="scope">
           {{scope.$index + 1}}
@@ -20,27 +20,27 @@
       </el-table-column>
       <el-table-column label="项目分类" align="center">
         <template slot-scope="scope">
-          {{scope.row.name}}
+          {{scope.row.clinic_label_name}}
         </template>
       </el-table-column>
       <el-table-column label="原价" align="center">
         <template slot-scope="scope">
-          <span>{{scope.row.Yprice}}</span>
+          <span>{{scope.row.origin_price}}</span>
         </template>
       </el-table-column>
       <el-table-column label="折扣价" align="center">
         <template slot-scope="scope">
-          {{scope.row.Dprice}}
+          {{scope.row.discount_price}}
         </template>
       </el-table-column>
       <el-table-column class-name="status-col" label="购买人数" align="center">
         <template slot-scope="scope">
-          {{scope.row.Bnum}}
+          {{scope.row.total_user}}
         </template>
       </el-table-column>
       <el-table-column align="center" label="操作" width="200">
         <template slot-scope="scope">
-          <el-button type="primary">编辑</el-button>
+          <el-button type="primary" @click="handleEdit">编辑</el-button>
           <el-button type="danger">删除</el-button>
         </template>
       </el-table-column>
@@ -49,10 +49,11 @@
 </template>
 
 <script>
+  import { getProjectList } from '@/api/clinic'
   export default {
     data() {
       return {
-        list: [{name: '拔牙', Yprice: '999', Dprice: '299', Bnum: '20'}],
+        projectList: [],
         listLoading: true,
         form: {
           name: ''
@@ -75,6 +76,14 @@
     methods: {
       fetchData() {
         this.listLoading = false
+        getProjectList().then(response => {
+          if(response.errorCode === 200) {
+            this.projectList = response.result;
+          }
+        })
+      },
+      handleEdit() {
+        this.$router.push({path: '/clinic/project'});
       },
       onSearch() {
 

@@ -46,7 +46,7 @@ export default {
 </script>
 <style>
   #map-container {
-      height: 200px;
+      height: 400px;
       width:800px;
   }
   .amap-logo {

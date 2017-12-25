@@ -12,7 +12,7 @@
         </el-col>
       </el-row>
     </el-form>
-    <el-table :data="list" v-loading.body="listLoading" element-loading-text="Loading" border fit highlight-current-row>
+    <el-table :data="doctorList" v-loading.body="listLoading" element-loading-text="Loading" border fit highlight-current-row>
       <el-table-column align="center" label='序号' width="95">
         <template slot-scope="scope">
           {{scope.$index + 1}}
@@ -40,7 +40,7 @@
       </el-table-column>
       <el-table-column align="center" label="操作" width="200">
         <template slot-scope="scope">
-          <el-button type="primary">编辑</el-button>
+          <el-button type="primary" @click="handleEdite">编辑</el-button>
           <el-button type="danger">删除</el-button>
         </template>
       </el-table-column>
@@ -49,10 +49,11 @@
 </template>
 
 <script>
+  import { getDoctorList } from '@/api/doctor'
   export default {
     data() {
       return {
-        list: [{name: '王医生', clinic: '劲松口腔医院', Ynum: '3', Pnum: '20'}],
+        doctorList: [],
         listLoading: true,
         form: {
           name: ''
@@ -75,6 +76,14 @@
     methods: {
       fetchData() {
         this.listLoading = false
+        getDoctorList().then(response => {
+          if(response.errorCode === 200) {
+            this.doctorList = response.result;
+          }
+        })
+      },
+      handleEdite() {
+        this.$router.push({path: '/clinic/doctorUpload'})
       },
       onSearch() {
 

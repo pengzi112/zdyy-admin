@@ -62,7 +62,7 @@ export const constantRouterMap = [
       {
         path: 'brand',
         name: '品牌介绍',
-        component: _import('brand/index'),
+        component: _import('brand/uploadBrand'),
         meta: { title: '品牌介绍', icon: 'tree' }
       },
     ]
@@ -85,7 +85,7 @@ export const constantRouterMap = [
         path: 'doctorList',
         name: '医生管理',
         component: _import('doctorList/index'),
-        meta: { title: '医生管理', icon: 'form' }
+        meta: { title: '医生管理', icon: 'form' },
       },
       {
         path: 'patientList',
@@ -93,20 +93,6 @@ export const constantRouterMap = [
         component: _import('patientList/index'),
         meta: { title: '患者管理', icon: 'table' }
       },
-    ]
-  },
-
-  {
-    path: '/setting',
-    component: Layout,
-    redirect: '/setting/index',
-    children: [
-      {
-        path: 'index',
-        name: 'News',
-        component: _import('form/index'),
-        meta: { title: '消息', icon: 'form' }
-      }
     ]
   },
 
@@ -118,4 +104,3 @@ export default new Router({
   scrollBehavior: () => ({ y: 0 }),
   routes: constantRouterMap
 })
-

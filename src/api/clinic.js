@@ -9,6 +9,7 @@ export function clinicUpload(data) {
   };
   return request.post('/index/index', data, config)
 }
+
 export function getArea(id) {
   return request({
     url: '/index/getArea',
@@ -32,4 +33,31 @@ export function doctorUpload(data) {
     }]
   };
   return request.post('/doctor/index', data, config)
+}
+
+export function brandUpload(data) {
+  let config = { 
+    headers:{'Content-Type':'multipart/form-data'},
+    transformRequest:[function (defaultData) {
+      return defaultData
+    }]
+  };
+  return request.post('/brand/index', data, config)
+}
+
+export function projectUpload(data) {
+  let config = { 
+    headers:{'Content-Type':'multipart/form-data'},
+    transformRequest:[function (defaultData) {
+      return defaultData
+    }]
+  };
+  return request.post('/Clinic_label/index', data, config)
+}
+
+export function getProjectList() {
+  return request({
+    url: '/Clinic_label/getLabelList',
+    method: 'get',
+  })
 }
