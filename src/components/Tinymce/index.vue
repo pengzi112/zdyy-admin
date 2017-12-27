@@ -180,7 +180,7 @@ export default {
 .editor-custom-btn-container {
   position: absolute;
   right: 15px;
-  z-index: 2005;
+  /* z-index: 2005; */
   top: 18px;
 }
 .editor-upload-btn {

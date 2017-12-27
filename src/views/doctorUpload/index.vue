@@ -6,8 +6,8 @@
       </el-form-item>
       <el-form-item label="性别：" prop="sex">
         <el-radio-group v-model="form.sex">
-          <el-radio label="男" value="1"></el-radio>
-          <el-radio label="女" value="0"></el-radio>
+          <el-radio :label="1">男</el-radio>
+          <el-radio :label="0">女</el-radio>
         </el-radio-group>
       </el-form-item>
       <el-form-item label="职称：" prop="title">
@@ -22,17 +22,18 @@
         </el-checkbox-group>
       </el-form-item>
       <el-form-item label="头像：" prop="doctor_headRule">
-        <uploadImg :maxLength='1' ref="doctorHead" class="editor-upload-btn" @successCBK="imageShow"></uploadImg>
+        <uploadImg :maxLength='1' :imgList="headList" ref="doctorHead" class="editor-upload-btn" @successCBK="imageShow"></uploadImg>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="onSubmit('form')">保存</el-button>
-        <el-button @click="onCancel('form')">取消</el-button>
+        <el-button @click="onCancel">取消</el-button>
       </el-form-item>
     </el-form>
   </div>
 </template>
 <script>
   import uploadImg from '@/components/imgUpload/index'
+  import { getDoctor } from '@/api/doctor'
   import { getProject, doctorUpload } from '@/api/clinic'
   export default {
     components: {
@@ -54,7 +55,7 @@
             {required: true, message: '请输入医生姓名', trigger: 'blur'},
           ],
           sex: [
-            {required: true, message: '请选择性别', trigger: 'change' }
+            {type: 'number', required: true, message: '请选择性别', trigger: 'change' }
           ],
           title: [
             {required: true, message: '请输入医生职称', trigger: 'blur'},
@@ -69,7 +70,9 @@
             {type: 'array', required: true, message: '请选择医生头像', trigger: 'change'}
           ],
         },
-        skillLists: []
+        skillLists: [],
+        headList: [], // 头像
+        isEdit: false, // 是否为编辑页
       }
     },
     created() {
@@ -80,6 +83,23 @@
         getProject().then(response => {
           this.skillLists = response;
         });
+        // 是否为编辑页
+        let id = this.$route.query.id;
+        if(id !== undefined) {
+          this.isEdit = true;
+          getDoctor(id).then(response => {
+            let data = response.result;
+            this.form.name = data[0].name;
+            this.form.sex = data[0].sex;
+            this.form.title = data[0].title;
+            this.form.describe = data[0].describe;
+            // this.form.label = data[0].fun_name;
+            let head = {url: data[0].doctor_head};
+            this.headList.push(head);
+          });
+        } else {
+          this.isEdit = false;
+        }
       },
       imageShow(arr) {
         this.form.doctor_headRule.push(arr[0].file);
@@ -100,6 +120,9 @@
             for (var i = 0; i < para.label.length; i++) {
               paraFormData.append('label[]', para.label[i]);
             }
+            if (this.isEdit) {
+              paraFormData.append('update', 'Y');
+            };
             doctorUpload(paraFormData).then(response => {
               if (response.errorCode === 200) {
                 this.$message({
@@ -112,12 +135,8 @@
           }
         })
       },
-      onCancel(formName) {
-        this.$message({
-          message: 'cancel!',
-          type: 'warning'
-        });
-        this.$refs[formName].resetFields();
+      onCancel() {
+        this.$router.push({path: '/resource/doctorList'})
       }
     }
   }

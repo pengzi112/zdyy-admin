@@ -11,11 +11,10 @@ export function login(phone, password) {
   })
 }
 
-export function getInfo(token) {
+export function getInfo() {
   return request({
-    url: '/user/info',
+    url: '/index/getClinic',
     method: 'get',
-    params: { token }
   })
 }
 

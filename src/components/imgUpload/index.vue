@@ -1,13 +1,13 @@
 <template>
     <div class="upload-container">
         <el-upload
+            class="common-upload"
             action="https://httpbin.org/post"
             :multiple="true"
             :limit="3"
             accept="image/*"
             :on-exceed="handleExceed"
-            :file-list="fileList"
-            :show-file-list="true"
+            :file-list="imgList"
             list-type="picture-card"
             :on-preview="handlePictureCardPreview"
             :on-remove="handleRemove"
@@ -27,12 +27,17 @@ export default {
     maxLength: {
       type: Number,
       default: '1'
+    },
+    imgList: {
+      type: Array,
+      default: function() {
+        return []
+      }
     }
   },
   data() {
     return {
       listObj: {},
-      fileList: [],
       dialogImageUrl: '',
       dialogVisible: false
     }
@@ -107,12 +112,15 @@ export default {
 
 <style rel="stylesheet/scss" lang="scss">
   .upload-container {
-    .el-upload{
-      width: 146px;
-      height: 146px;
-      .el-icon-plus{
-        line-height: 146px;
+    .common-upload{
+      .el-upload{
+        width: 148px;
+        height: 148px;
+        .el-icon-plus{
+          line-height: 148px;
+        }
       }
     }
+    
   }
 </style>

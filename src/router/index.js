@@ -39,35 +39,34 @@ export const constantRouterMap = [
     component: Layout,
     redirect: '/clinic/clinicdata',
     name: '门诊信息',
-    meta: { title: '门诊信息', icon: 'example' },
+    meta: { title: '门诊信息', icon: 'clinic' },
     children: [
       {
         path: 'clinicdata',
         name: '门诊资料',
         component: _import('clinicdata/index'),
-        meta: { title: '门诊资料上传', icon: 'table' }
+        meta: { title: '门诊资料上传', icon: 'clinicMsg' }
       },
       {
         path: 'doctorUpload',
         name: '医生资料',
         component: _import('doctorUpload/index'),
-        meta: { title: '医生资料上传', icon: 'table' }
+        meta: { title: '医生资料上传', icon: 'doctorMsg' }
       },
       {
         path: 'project',
         name: '项目上传',
         component: _import('project/index'),
-        meta: { title: '项目上传', icon: 'tree' }
+        meta: { title: '项目上传', icon: 'project' }
       },
       {
         path: 'brand',
         name: '品牌介绍',
         component: _import('brand/uploadBrand'),
-        meta: { title: '品牌介绍', icon: 'tree' }
+        meta: { title: '品牌介绍', icon: 'brand' }
       },
     ]
   },
-
   {
     path: '/resource',
     component: Layout,
@@ -79,19 +78,26 @@ export const constantRouterMap = [
         path: 'projectList',
         name: '项目管理',
         component: _import('projectList/index'),
-        meta: { title: '项目管理', icon: 'form' }
+        meta: { title: '项目管理', icon: 'projectList' }
       },
       {
         path: 'doctorList',
         name: '医生管理',
         component: _import('doctorList/index'),
-        meta: { title: '医生管理', icon: 'form' },
+        meta: { title: '医生管理', icon: 'doctorList' },
+      },
+      {
+        path: 'doctorList/doctorDetail',
+        name: '医生详情',
+        component: _import('doctorUpload/index'),
+        meta: { title: '医生详情', icon: 'doctorList' },
+        hidden: true
       },
       {
         path: 'patientList',
         name: '患者管理',
         component: _import('patientList/index'),
-        meta: { title: '患者管理', icon: 'table' }
+        meta: { title: '患者管理', icon: 'patientList' }
       },
     ]
   },

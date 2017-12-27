@@ -55,10 +55,10 @@
         </el-col>
       </el-form-item>
       <el-form-item label="门诊靓照：" prop="clinic_img">
-        <uploadImg :maxLength='6' class="editor-upload-btn" @successCBK="imageShow"></uploadImg>
+        <uploadImg :maxLength='6' :imgList="imgList" class="editor-upload-btn" @successCBK="imageShow"></uploadImg>
       </el-form-item>
       <el-form-item label="门诊logo：" prop="clinic_logoRule">
-        <uploadImg :maxLength='1' class="editor-upload-btn" @successCBK="imageLogo"></uploadImg>
+        <uploadImg :maxLength='1' :imgList="logoList" class="editor-upload-btn" @successCBK="imageLogo"></uploadImg>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="onSubmit('form')">保存</el-button>
@@ -71,6 +71,7 @@
   import loadMap from '@/views/map/index'
   import { getToken } from '@/utils/auth'
   import { parseTime } from '@/utils/index'
+  import { getInfo } from '@/api/login'
   import { getArea, clinicUpload } from '@/api/clinic'
   import ElFormItem from "../../../node_modules/element-ui/packages/form/src/form-item";
   import ElCol from "element-ui/packages/col/src/col";
@@ -91,7 +92,6 @@
           city_id: '',
           area_id: '',
           detail: '',
-          phone: '',
           jingwei: '',
           phone: '',
           business_time: '',
@@ -144,6 +144,8 @@
         provinceList: [], // 省份列表
         cityList: [], // 城市列表
         areaList: [], // 区域列表
+        imgList: [], // 靓照数组
+        logoList: [], // logo
       }
     },
     created() {
@@ -154,6 +156,26 @@
         getArea(0).then(response => {
           this.provinceList = response;
         });
+        getInfo().then(response => {
+          let data = response.result;
+          this.form.name = data.name;
+          this.form.provice_id = data.provice_id;
+          this.form.city_id = data.city_id;
+          this.form.area_id = data.area_id;
+          this.form.detail = data.detail;
+          this.form.phone = data.phone;
+          this.form.jingwei = data.jingwei;
+          this.form.business_time = data.business_time;
+          this.form.clinic_logo = data.clinic_logo;
+          let clinic_imgStr = data.clinic_img;
+          let imgArr = clinic_imgStr.split(',');
+          for (var i = 0; i < imgArr.length; i++) {
+            let imgObj = {url: imgArr[i]};
+            this.imgList.push(imgObj);
+          }
+          let logo = {url: data.clinic_logo};
+          this.logoList.push(logo);
+        })
       },
       getCity(val) {
         getArea(val).then(response => {

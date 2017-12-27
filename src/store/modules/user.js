@@ -4,9 +4,10 @@ import { getToken, setToken, removeToken } from '@/utils/auth'
 const user = {
   state: {
     token: getToken(),
-    name: 'pengzi',
-    avatar: 'admin',
-    roles: ['superAdmin']
+    name: '',
+    avatar: '',
+    roles: '',
+    head: 'http://pic32.photophoto.cn/20140919/0007020154404428_b.jpg',
   },
 
   mutations: {
@@ -21,7 +22,10 @@ const user = {
     },
     SET_ROLES: (state, roles) => {
       state.roles = roles
-    }
+    },
+    SET_HEAD: (state, head) => {
+      state.head = head
+    },
   },
 
   actions: {
@@ -43,11 +47,13 @@ const user = {
     // 获取用户信息
     GetInfo({ commit, state }) {
       return new Promise((resolve, reject) => {
-        getInfo(state.token).then(response => {
-          const data = response.data
-          commit('SET_ROLES', data.role)
+        getInfo().then(response => {
+          console.log(response);
+          const data = response.result
+          commit('SET_ROLES', data.id)
           commit('SET_NAME', data.name)
-          commit('SET_AVATAR', data.avatar)
+          commit('SET_AVATAR', data.provice_id)
+          commit('SET_HEAD', data.clinic_logo)
           resolve(response)
         }).catch(error => {
           reject(error)
@@ -60,7 +66,7 @@ const user = {
       return new Promise((resolve, reject) => {
         logout(state.token).then(() => {
           commit('SET_TOKEN', '')
-          commit('SET_ROLES', [])
+          commit('SET_ROLES', '')
           removeToken()
           resolve()
         }).catch(error => {

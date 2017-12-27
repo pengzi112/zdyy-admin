@@ -40,7 +40,7 @@
       </el-table-column>
       <el-table-column align="center" label="操作" width="200">
         <template slot-scope="scope">
-          <el-button type="primary" @click="handleEdite">编辑</el-button>
+          <el-button type="primary" @click="handleEdite(scope.row)">编辑</el-button>
           <el-button type="danger">删除</el-button>
         </template>
       </el-table-column>
@@ -82,8 +82,9 @@
           }
         })
       },
-      handleEdite() {
-        this.$router.push({path: '/clinic/doctorUpload'})
+      handleEdite(row) {
+        console.log(row);
+        this.$router.push({path: '/resource/doctorList/doctorDetail', query: {id: row.doctor_id}})
       },
       onSearch() {
 

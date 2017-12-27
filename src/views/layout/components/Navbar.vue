@@ -9,7 +9,7 @@
       <div class="avatar-wrapper">
         <div class="user-name">{{name}}</div>
         <el-badge is-dot>
-          <img class="user-avatar" src="http://pic32.photophoto.cn/20140919/0007020154404428_b.jpg">
+          <img class="user-avatar" :src="head">
         </el-badge>
         <i class="el-icon-caret-bottom"></i>
       </div>
@@ -44,7 +44,6 @@ import Hamburger from '@/components/Hamburger'
 export default {
   data () {
     return {
-      name: '劲松口腔医院'
     }
   },
   components: {
@@ -54,7 +53,8 @@ export default {
   computed: {
     ...mapGetters([
       'sidebar',
-      'avatar'
+      'name',
+      'head'
     ])
   },
   methods: {

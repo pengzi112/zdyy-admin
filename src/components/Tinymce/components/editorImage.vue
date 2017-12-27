@@ -13,7 +13,7 @@
                     :on-remove="handleRemove"
                     :on-success="handleSuccess"
                     :before-upload="beforeUpload">
-                <el-button size="small" type="primary">点击上传</el-button>
+                <el-button size="small" type="primary" class="clickBtn">点击上传</el-button>
             </el-upload>
             <el-button @click="dialogShow = false">取 消</el-button>
             <el-button type="primary" @click="handleSubmit">确 定</el-button>
@@ -95,12 +95,9 @@ export default {
 
 <style rel="stylesheet/scss" lang="scss" scoped>
   .upload-container {
-        .editor-slide-upload {
-            width: 100%;
-            margin-bottom: 20px;
-            .el-upload--picture-card {
-              width: 100%;
-            }
-        }
-    }
+      .editor-slide-upload {
+          width: 100%;
+          margin-bottom: 20px;
+      }
+  }
 </style>

@@ -6,3 +6,13 @@ export function getDoctorList() {
     method: 'get',
   })
 }
+
+export function getDoctor(id) {
+  return request({
+    url: '/doctor/getDoctor',
+    method: 'get',
+    params:{
+    	doctor_id: id
+    }
+  })
+}
