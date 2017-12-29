@@ -22,17 +22,18 @@
         </el-checkbox-group>
       </el-form-item>
       <el-form-item label="头像：" prop="doctor_headRule">
-        <uploadImg :maxLength='1' ref="doctorHead" class="editor-upload-btn" @successCBK="imageShow"></uploadImg>
+        <uploadImg :maxLength='1' :imgList="headList" ref="doctorHead" class="editor-upload-btn" @successCBK="imageShow"></uploadImg>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="onSubmit('form')">保存</el-button>
-        <el-button @click="onCancel">取消</el-button>
+        <el-button @click="onCancel">返回</el-button>
       </el-form-item>
     </el-form>
   </div>
 </template>
 <script>
   import uploadImg from '@/components/imgUpload/index'
+  import { getDoctor } from '@/api/doctor'
   import { getProject, doctorUpload } from '@/api/clinic'
   export default {
     components: {
@@ -70,6 +71,8 @@
           ],
         },
         skillLists: [],
+        headList: [], // 头像
+        doctorId: '', // 医生id
       }
     },
     created() {
@@ -77,8 +80,25 @@
     },
     methods: {
       fetchData() {
+        this.doctorId = this.$route.query.id;
         getProject().then(response => {
           this.skillLists = response;
+        });
+        // 获取医生详情
+        getDoctor(this.doctorId).then(response => {
+          let data = response.result;
+          console.log(data);
+          this.form.name = data[0].name;
+          this.form.sex = data[0].sex;
+          this.form.title = data[0].title;
+          this.form.describe = data[0].describe;
+          let funArr = data[0].fun_arr;
+          for (var i = 0; i < funArr.length; i++) {
+            let currentFun = Number(funArr[i].fun_id);
+            this.form.label.push(currentFun);
+          }
+          let head = {url: data[0].doctor_head};
+          this.headList.push(head);
         });
       },
       imageShow(arr) {
@@ -97,6 +117,8 @@
             paraFormData.append('title', para.title);
             paraFormData.append('describe', para.describe);
             paraFormData.append('doctor_head', para.doctor_head);
+            paraFormData.append('update', 'Y');
+            paraFormData.append('doctor_id', this.doctorId);
             for (var i = 0; i < para.label.length; i++) {
               paraFormData.append('label[]', para.label[i]);
             }

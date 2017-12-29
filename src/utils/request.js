@@ -59,7 +59,14 @@ service.interceptors.response.use(
       }
       if (res.errorCode === 70000) {
         Message({
-          message: res,
+          message: res.msg,
+          type: 'error',
+          duration: 5 * 1000
+        })
+      }
+      if (res.errorCode === 40000) {
+        Message({
+          message: res.msg,
           type: 'error',
           duration: 5 * 1000
         })

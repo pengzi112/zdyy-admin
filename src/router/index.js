@@ -56,7 +56,7 @@ export const constantRouterMap = [
       {
         path: 'project',
         name: '项目上传',
-        component: _import('project/index'),
+        component: _import('projectUpload/index'),
         meta: { title: '项目上传', icon: 'project' }
       },
       {
@@ -81,6 +81,13 @@ export const constantRouterMap = [
         meta: { title: '项目管理', icon: 'projectList' }
       },
       {
+        path: 'projectList/projectDetail',
+        name: '项目详情',
+        component: _import('projectList/projectDetail'),
+        meta: { title: '项目详情', icon: 'projectList' },
+        hidden: true
+      },
+      {
         path: 'doctorList',
         name: '医生管理',
         component: _import('doctorList/index'),
@@ -89,7 +96,7 @@ export const constantRouterMap = [
       {
         path: 'doctorList/doctorDetail',
         name: '医生详情',
-        component: _import('doctorUpload/index'),
+        component: _import('doctorList/doctorDetail'),
         meta: { title: '医生详情', icon: 'doctorList' },
         hidden: true
       },

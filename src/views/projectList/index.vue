@@ -20,7 +20,8 @@
       </el-table-column>
       <el-table-column label="项目分类" align="center">
         <template slot-scope="scope">
-          {{scope.row.clinic_label_name}}
+          <!-- {{scope.row.clinic_label_name}} -->
+          {{scope.row.name}}
         </template>
       </el-table-column>
       <el-table-column label="原价" align="center">
@@ -40,8 +41,8 @@
       </el-table-column>
       <el-table-column align="center" label="操作" width="200">
         <template slot-scope="scope">
-          <el-button type="primary" @click="handleEdit">编辑</el-button>
-          <el-button type="danger">删除</el-button>
+          <el-button type="primary" @click="handleEdit(scope.row)">编辑</el-button>
+          <el-button type="danger" @click="handleDel(scope.$index, scope.row)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -49,7 +50,7 @@
 </template>
 
 <script>
-  import { getProjectList } from '@/api/clinic'
+  import { getProject, deleteProject } from '@/api/clinic'
   export default {
     data() {
       return {
@@ -76,14 +77,45 @@
     methods: {
       fetchData() {
         this.listLoading = false
-        getProjectList().then(response => {
-          if(response.errorCode === 200) {
+        getProject().then(response => {
+          this.projectList = response;
+          /*if(response.errorCode === 200) {
+            console.log(response);
             this.projectList = response.result;
+          }*/
+        })
+        let projectData = {id: '1', name: '拔牙', origin_price: '500', discount_price: '300', total_user: '268'}
+        this.projectList.push(projectData);
+      },
+      handleDel(index, row) {
+        this.$confirm('确认要删除该项目吗?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.projectDel(index, row.id);
+        })
+      },
+      projectDel(index, id) {
+        let clinicId = id.toString();
+        let param = new FormData();
+        param.append('clinic_label_id', clinicId);
+        deleteProject(param).then(response => {
+          if(response.errorCode === 200) {
+            let that = this;
+            this.$message({
+              message: '删除成功！',
+              type: 'success',
+              duration: 1000,
+              onClose: function() {
+                that.projectList.splice(index, 1);
+              }
+            });
           }
         })
       },
-      handleEdit() {
-        this.$router.push({path: '/clinic/project'});
+      handleEdit(row) {
+        this.$router.push({path: 'projectList/projectDetail', query: {id: row.id}});
       },
       onSearch() {
 

@@ -54,10 +54,28 @@ export function projectUpload(data) {
   };
   return request.post('/Clinic_label/index', data, config)
 }
-
-export function getProjectList() {
+// 获取项目列表 (暂时去掉)
+/* export function getProjectList() {
   return request({
     url: '/Clinic_label/getLabelList',
     method: 'get',
   })
+} */
+
+export function getProjectDetail(id) {
+  return request({
+    url: '/Clinic_label/getClinicLabel',
+    method: 'get',
+    params: {'label_id': id}
+  })
+}
+
+export function deleteProject(data) {
+  let config = { 
+    headers:{'Content-Type':'multipart/form-data'},
+    transformRequest:[function (defaultData) {
+      return defaultData
+    }]
+  };
+  return request.post('Clinic_label/deleteClinicLabel', data, config)
 }

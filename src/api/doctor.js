@@ -16,3 +16,13 @@ export function getDoctor(id) {
     }
   })
 }
+
+export function deleteDoctor(data) {
+  let config = { 
+    headers:{'Content-Type':'multipart/form-data'},
+    transformRequest:[function (defaultData) {
+      return defaultData
+    }]
+  };
+  return request.post('/doctor/deleteDoctor', data, config)
+}

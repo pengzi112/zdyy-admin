@@ -25,23 +25,23 @@
       </el-table-column>
       <el-table-column label="所属门诊" align="center">
         <template slot-scope="scope">
-          <span>{{scope.row.clinic}}</span>
+          <span>{{ name }}<!-- {{scope.row.clinic}} --></span>
         </template>
       </el-table-column>
       <el-table-column label="预约数量" align="center">
         <template slot-scope="scope">
-          {{scope.row.Ynum}}
+          暂无<!-- {{scope.row.Ynum}} -->
         </template>
       </el-table-column>
       <el-table-column class-name="status-col" label="评价数量" align="center">
         <template slot-scope="scope">
-          {{scope.row.Pnum}}
+          暂无<!-- {{scope.row.Pnum}} -->
         </template>
       </el-table-column>
       <el-table-column align="center" label="操作" width="200">
         <template slot-scope="scope">
           <el-button type="primary" @click="handleEdite(scope.row)">编辑</el-button>
-          <el-button type="danger">删除</el-button>
+          <el-button type="danger" @click="handleDel(scope.$index, scope.row)">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -49,7 +49,8 @@
 </template>
 
 <script>
-  import { getDoctorList } from '@/api/doctor'
+  import { mapGetters } from 'vuex'
+  import { getDoctorList, deleteDoctor } from '@/api/doctor'
   export default {
     data() {
       return {
@@ -73,6 +74,11 @@
     created() {
       this.fetchData()
     },
+    computed: {
+      ...mapGetters([
+        'name',
+      ])
+    },
     methods: {
       fetchData() {
         this.listLoading = false
@@ -82,8 +88,34 @@
           }
         })
       },
+      handleDel(index, row) {
+        this.$confirm('确认要删除该医生吗?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.doctorDel(index, row.doctor_id);
+        })
+      },
+      doctorDel(index, id) {
+        let doctorId = id.toString();
+        let param = new FormData();
+        param.append('doctor_id', doctorId);
+        deleteDoctor(param).then(response => {
+          if(response.errorCode === 200) {
+            let that = this;
+            this.$message({
+              message: '删除成功！',
+              type: 'success',
+              duration: 1000,
+              onClose: function() {
+                that.doctorList.splice(index, 1);
+              }
+            });
+          }
+        })
+      },
       handleEdite(row) {
-        console.log(row);
         this.$router.push({path: '/resource/doctorList/doctorDetail', query: {id: row.doctor_id}})
       },
       onSearch() {

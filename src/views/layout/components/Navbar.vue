@@ -80,6 +80,7 @@ export default {
 .navbar {
   width: 100%;
   position: fixed;
+  left: 0;
   top: 0;
   height: 60px;
   line-height: 60px;

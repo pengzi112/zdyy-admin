@@ -146,6 +146,7 @@
         areaList: [], // 区域列表
         imgList: [], // 靓照数组
         logoList: [], // logo
+        isEdit: false, // 是否为编辑页
       }
     },
     created() {
@@ -154,37 +155,57 @@
     methods: {
       fetchData() {
         getArea(0).then(response => {
-          this.provinceList = response;
+          if (response.errorCode === 200) {
+            this.provinceList = response.result;
+          } 
         });
         getInfo().then(response => {
           let data = response.result;
-          this.form.name = data.name;
-          this.form.provice_id = data.provice_id;
-          this.form.city_id = data.city_id;
-          this.form.area_id = data.area_id;
-          this.form.detail = data.detail;
-          this.form.phone = data.phone;
-          this.form.jingwei = data.jingwei;
-          this.form.business_time = data.business_time;
-          this.form.clinic_logo = data.clinic_logo;
-          let clinic_imgStr = data.clinic_img;
-          let imgArr = clinic_imgStr.split(',');
-          for (var i = 0; i < imgArr.length; i++) {
-            let imgObj = {url: imgArr[i]};
-            this.imgList.push(imgObj);
+          if(data.id) {
+            this.isEdit = true;
+            this.form.name = data.name;
+            this.form.provice_id = data.provice_id;
+            this.getCity(this.form.provice_id);
+            this.form.city_id = data.city_id;
+            this.getCounty(this.form.city_id);
+            this.form.area_id = data.area_id;
+            this.form.detail = data.detail;
+            this.form.phone = data.phone;
+            this.form.jingwei = data.jingwei;
+            this.form.business_time = data.business_time;
+            let timeData = data.business_time.split(',');
+            let timeStart = "2017-12-12 " + timeData[0];
+            this.form.time1 = new Date(timeStart);
+            let timeEnd = "2017-12-12 " + timeData[1];
+            this.form.time2 = new Date(timeEnd);
+            this.form.clinic_logo = data.clinic_logo;
+            this.form.clinic_logoRule.push(data.clinic_logo);
+            let clinic_imgStr = data.clinic_img;
+            let imgArr = clinic_imgStr.split(',');
+            for (var i = 0; i < imgArr.length; i++) {
+              let imgObj = {url: imgArr[i]};
+              this.imgList.push(imgObj);
+              this.form.clinic_img.push(imgArr[i]);
+            }
+            let logo = {url: data.clinic_logo};
+            this.logoList.push(logo);
+          } else {
+            this.isEdit = false;
           }
-          let logo = {url: data.clinic_logo};
-          this.logoList.push(logo);
         })
       },
       getCity(val) {
         getArea(val).then(response => {
-          this.cityList = response;
+          if(response.errorCode === 200) {
+            this.cityList = response.result;
+          }
         });
       },
       getCounty(val) {
         getArea(val).then(response => {
-          this.areaList = response;
+          if (response.errorCode === 200) {
+            this.areaList = response.result;
+          }
         });
       },
       onMap() {
@@ -195,6 +216,7 @@
         this.form.jingwei = msgJson.lng + ',' + msgJson.lat;
       },
       imageShow(arr) {
+        console.log(arr);
         for(var i = 0; i < arr.length; i++) {
           this.form.clinic_img.push(arr[i].file)
         }
@@ -222,6 +244,9 @@
             param.append('jingwei', para.jingwei);
             param.append('phone', para.phone);
             param.append('business_time', para.business_time);
+            if(this.isEdit) {
+              param.append('update', 'Y');
+            }
             for (var i = 0; i < para.clinic_img.length; i++) {
               param.append('clinic_img[]', para.clinic_img[i]);
             }

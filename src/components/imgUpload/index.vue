@@ -12,7 +12,8 @@
             :on-preview="handlePictureCardPreview"
             :on-remove="handleRemove"
             :on-success="handleSuccess"
-            :before-upload="beforeUpload">
+            :before-upload="beforeUpload"
+            :on-change="fileChange">
             <i class="el-icon-plus"></i>
         </el-upload>
         <el-dialog :visible.sync="dialogVisible">
@@ -81,6 +82,9 @@ export default {
         }
       }
       this.handleSubmit();
+    },
+    fileChange(file, fileList) {
+      console.log(file);
     },
     beforeUpload(file) {
       let fileArr = Object.keys(this.listObj).map(v => this.listObj[v]);

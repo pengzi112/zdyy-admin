@@ -95,8 +95,9 @@ export default {
 
   .login-container {
     @include relative;
-    @include bgImages;
     height: 100vh;
+    background: url(images/zdyy_bg1.jpg) no-repeat center fixed;
+    background-size: cover;
     /* input:-webkit-autofill {
       -webkit-box-shadow: 0 0 0px 1000px #293444 inset !important;
       -webkit-text-fill-color: #fff !important;
