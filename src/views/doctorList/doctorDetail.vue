@@ -22,7 +22,8 @@
         </el-checkbox-group>
       </el-form-item>
       <el-form-item label="头像：" prop="doctor_headRule">
-        <uploadImg :maxLength='1' :imgList="headList" ref="doctorHead" class="editor-upload-btn" @successCBK="imageShow"></uploadImg>
+        <img class="uploaded_img" :src="headList" v-show="doctor_head_upload">
+        <uploadImg :maxLength='1' :isEdit="true" ref="doctorHead" class="editor-upload-btn" @successCBK="imageShow"></uploadImg>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="onSubmit('form')">保存</el-button>
@@ -71,8 +72,9 @@
           ],
         },
         skillLists: [],
-        headList: [], // 头像
+        headList: '', // 头像
         doctorId: '', // 医生id
+        doctor_head_upload: true, // 已上传的头像是否显示
       }
     },
     created() {
@@ -86,8 +88,8 @@
         });
         // 获取医生详情
         getDoctor(this.doctorId).then(response => {
+          console.log(response);
           let data = response.result;
-          console.log(data);
           this.form.name = data[0].name;
           this.form.sex = data[0].sex;
           this.form.title = data[0].title;
@@ -97,11 +99,12 @@
             let currentFun = Number(funArr[i].fun_id);
             this.form.label.push(currentFun);
           }
-          let head = {url: data[0].doctor_head};
-          this.headList.push(head);
+          this.form.doctor_headRule.push(data[0].doctor_head);
+          this.headList = data[0].doctor_head;
         });
       },
       imageShow(arr) {
+        this.doctor_head_upload = false;
         this.form.doctor_headRule.push(arr[0].file);
         this.form.doctor_head = arr[0].file;
       },
@@ -110,7 +113,7 @@
           if(valid) {
             let para = Object.assign({}, this.form);
             delete para['doctor_headRule'];
-            console.log(para);
+            // console.log(para);
             let paraFormData = new FormData();
             paraFormData.append('name', para.name);
             paraFormData.append('sex', para.sex);
@@ -144,6 +147,16 @@
 <style scoped>
   .line{
     text-align: center;
+  }
+  .uploaded_img{
+    display: block;
+    width: 146px;
+    height: 146px;
+    margin-right: 10px;
+    float: left;
+    cursor: pointer;
+    border: 0;
+    border-radius: 6px;
   }
 </style>
 

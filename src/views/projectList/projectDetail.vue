@@ -28,7 +28,8 @@
         </el-col>
       </el-form-item>
       <el-form-item label="项目照片：" prop="imgRule">
-        <uploadImg :maxLength='1' :imgList="imgList" @successCBK="imageShow"></uploadImg>
+        <img class="uploaded_img" :src="imgList" v-show="project_upload">
+        <uploadImg :maxLength='1' :isEdit="true" @successCBK="imageShow"></uploadImg>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="onSubmit('form')">保存</el-button>
@@ -76,7 +77,9 @@
         },
         skillLists: [],
         clinicId: '', // 项目id
-        imgList: [], // 项目照
+        clinic_label_id: '',
+        imgList: '', // 项目照
+        project_upload: true, //是否显示已上传的图片
       }
     },
     created() {
@@ -84,25 +87,27 @@
     },
     methods: {
       fetchData() {
-        this.clinicId = this.$route.query.id;
+        this.clinicId = this.$route.query.label_id;
+        this.clinic_label_id = this.$route.query.clinic_label_id;
         getProject().then(response => {
           this.skillLists = response;
         });
         getProjectDetail(this.clinicId).then(response => {
           if(response.errorCode === 200) {
+            console.log(response);
             let labelData = response.result;
-            this.form.label_id = labelData.id;
+            this.form.label_id = labelData.label_id;
             this.form.clinic_label_name = labelData.clinic_label_name;
             this.form.origin_price = labelData.origin_price;
             this.form.discount_price = labelData.discount_price;
             this.form.img = labelData.img;
             this.form.imgRule.push(labelData.img);
-            let logo = {url: labelData.img};
-            this.imgList.push(logo);
+            this.imgList = labelData.img;
           }
         });
       },
       imageShow(arr) {
+        this.project_upload = false;
         this.form.imgRule.push(arr[0].file);
         this.form.img = arr[0].file;
       },
@@ -118,7 +123,7 @@
             param.append('discount_price', para.discount_price);
             param.append('img', para.img);
             param.append('update', 'Y');
-            param.append('clinic_label_id', this.clinicId);
+            param.append('clinic_label_id', this.clinic_label_id);
             projectUpload(param).then(response => {
               if (response.errorCode === 200) {
                 this.$message({
@@ -141,6 +146,16 @@
 <style scoped>
 .line{
   text-align: center;
+}
+.uploaded_img{
+  display: block;
+  width: 146px;
+  height: 146px;
+  margin-right: 10px;
+  float: left;
+  cursor: pointer;
+  border: 0;
+  border-radius: 6px;
 }
 </style>
 

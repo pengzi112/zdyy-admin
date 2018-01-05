@@ -54,11 +54,17 @@
           </el-form-item>
         </el-col>
       </el-form-item>
-      <el-form-item label="门诊靓照：" prop="clinic_img">
-        <uploadImg :maxLength='6' :imgList="imgList" class="editor-upload-btn" @successCBK="imageShow"></uploadImg>
+      <el-form-item label="门诊靓照：" prop="clinic_imgRule">
+        <el-col :span="24">
+          <img class="uploaded_img" :src="item" v-for="(item, index) in imgList" v-show="uploaded_img">
+          <uploadImg :maxLength='6' :isEdit="isEdit" class="editor-upload-btn" @successCBK="imageShow"></uploadImg>
+        </el-col>
       </el-form-item>
       <el-form-item label="门诊logo：" prop="clinic_logoRule">
-        <uploadImg :maxLength='1' :imgList="logoList" class="editor-upload-btn" @successCBK="imageLogo"></uploadImg>
+        <el-col :span="24">
+          <img class="uploaded_img" :src="logoList" v-show="uploaded_logo">
+          <uploadImg :maxLength='1' :isEdit="isEdit" class="editor-upload-btn" @successCBK="imageLogo"></uploadImg>
+        </el-col>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click="onSubmit('form')">保存</el-button>
@@ -96,6 +102,7 @@
           phone: '',
           business_time: '',
           clinic_img: [],
+          clinic_imgRule: [], // 验证靓照是否上传
           clinic_logo: {},
           clinic_logoRule: [], // 验证logo是否上传
           time1: '',
@@ -118,7 +125,7 @@
           area_id: [
             {type: 'number', required: true, message: '请选择县/区', trigger: 'change' }
           ],
-          clinic_img: [
+          clinic_imgRule: [
             {type: 'array', required: true, message: '请选择靓照', trigger: 'change'}
           ],
           clinic_logoRule: [
@@ -145,8 +152,10 @@
         cityList: [], // 城市列表
         areaList: [], // 区域列表
         imgList: [], // 靓照数组
-        logoList: [], // logo
+        logoList: '', // logo
         isEdit: false, // 是否为编辑页
+        uploaded_logo: false, // 已上传的logo是否显示
+        uploaded_img: false, // 已上传的靓照
       }
     },
     created() {
@@ -161,7 +170,10 @@
         });
         getInfo().then(response => {
           let data = response.result;
+          console.log(response);
           if(data.id) {
+            this.uploaded_img = true;
+            this.uploaded_logo = true;
             this.isEdit = true;
             this.form.name = data.name;
             this.form.provice_id = data.provice_id;
@@ -181,16 +193,13 @@
             this.form.clinic_logo = data.clinic_logo;
             this.form.clinic_logoRule.push(data.clinic_logo);
             let clinic_imgStr = data.clinic_img;
-            let imgArr = clinic_imgStr.split(',');
-            for (var i = 0; i < imgArr.length; i++) {
-              let imgObj = {url: imgArr[i]};
-              this.imgList.push(imgObj);
-              this.form.clinic_img.push(imgArr[i]);
-            }
-            let logo = {url: data.clinic_logo};
-            this.logoList.push(logo);
+            this.imgList = clinic_imgStr.split(',');
+            this.form.clinic_imgRule = this.imgList;
+            this.logoList = data.clinic_logo;
           } else {
             this.isEdit = false;
+            this.uploaded_logo = true;
+            this.uploaded_img = true;
           }
         })
       },
@@ -216,12 +225,14 @@
         this.form.jingwei = msgJson.lng + ',' + msgJson.lat;
       },
       imageShow(arr) {
-        console.log(arr);
+        this.uploaded_img = false;
         for(var i = 0; i < arr.length; i++) {
-          this.form.clinic_img.push(arr[i].file)
+          this.form.clinic_img.push(arr[i].file);
+          this.form.clinic_imgRule.push(arr[i].file);
         }
       },
       imageLogo(arr) {
+        this.uploaded_logo = false;
         this.form.clinic_logoRule.push(arr[0].file);
         this.form.clinic_logo = arr[0].file;
       },
@@ -235,6 +246,7 @@
             delete para['time1'];
             delete para['time2'];
             delete para['clinic_logoRule'];
+            delete para['clinic_imgRule'];
             let param = new FormData();
             param.append('name', para.name);
             param.append('provice_id', para.provice_id);
@@ -267,12 +279,22 @@
   }
 </script>
 
-<style>
+<style scoped>
   .line{
     text-align: center;
   }
   .getMap .el-input__inner{
     cursor: pointer !important;
+  }
+  .uploaded_img{
+    display: block;
+    width: 146px;
+    height: 146px;
+    margin-right: 10px;
+    float: left;
+    cursor: pointer;
+    border: 0;
+    border-radius: 6px;
   }
 </style>
 

@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <el-form :inline="true" ref="form" :model="form" label-width="100px">
+    <!-- <el-form :inline="true" ref="form" :model="form" label-width="100px">
       <el-row>
         <el-col :span="24">
           <el-form-item label="项目搜索:">
@@ -11,7 +11,7 @@
           </el-form-item>
         </el-col>
       </el-row>
-    </el-form>
+    </el-form> -->
     <el-table :data="projectList" v-loading.body="listLoading" element-loading-text="Loading" border fit highlight-current-row>
       <el-table-column align="center" label='序号' width="95">
         <template slot-scope="scope">
@@ -20,8 +20,7 @@
       </el-table-column>
       <el-table-column label="项目分类" align="center">
         <template slot-scope="scope">
-          <!-- {{scope.row.clinic_label_name}} -->
-          {{scope.row.name}}
+          {{scope.row.clinic_label_name}}
         </template>
       </el-table-column>
       <el-table-column label="原价" align="center">
@@ -50,25 +49,12 @@
 </template>
 
 <script>
-  import { getProject, deleteProject } from '@/api/clinic'
+  import { getProjectList, deleteProject } from '@/api/clinic'
   export default {
     data() {
       return {
         projectList: [],
         listLoading: true,
-        form: {
-          name: ''
-        }
-      }
-    },
-    filters: {
-      statusFilter(status) {
-        const statusMap = {
-          published: 'success',
-          draft: 'gray',
-          deleted: 'danger'
-        }
-        return statusMap[status]
       }
     },
     created() {
@@ -77,15 +63,11 @@
     methods: {
       fetchData() {
         this.listLoading = false
-        getProject().then(response => {
-          this.projectList = response;
-          /*if(response.errorCode === 200) {
-            console.log(response);
+        getProjectList().then(response => {
+          if(response.errorCode === 200) {
             this.projectList = response.result;
-          }*/
+          }
         })
-        let projectData = {id: '1', name: '拔牙', origin_price: '500', discount_price: '300', total_user: '268'}
-        this.projectList.push(projectData);
       },
       handleDel(index, row) {
         this.$confirm('确认要删除该项目吗?', '提示', {
@@ -115,10 +97,7 @@
         })
       },
       handleEdit(row) {
-        this.$router.push({path: 'projectList/projectDetail', query: {id: row.id}});
-      },
-      onSearch() {
-
+        this.$router.push({path: 'projectList/projectDetail', query: {label_id: row.label_id, clinic_label_id: row.id}});
       }
     }
   }
