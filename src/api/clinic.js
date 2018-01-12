@@ -54,13 +54,13 @@ export function projectUpload(data) {
   };
   return request.post('/Clinic_label/index', data, config)
 }
-// 获取项目列表 (暂时去掉)
-/* export function getProjectList() {
+// 获取项目列表
+export function getProjectList() {
   return request({
-    url: '/Clinic_label/getLabelList',
+    url: '/Clinic_label/getClinicList',
     method: 'get',
   })
-} */
+}
 
 export function getProjectDetail(id) {
   return request({

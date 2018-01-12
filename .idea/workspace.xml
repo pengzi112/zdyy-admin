@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="0320c04c-e0c9-4437-8bd2-ed9c06971d98" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/package.json" afterPath="$PROJECT_DIR$/package.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/views/clinicdata/index.vue" afterPath="$PROJECT_DIR$/src/views/clinicdata/index.vue" />
-    </list>
+    <list default="true" id="0320c04c-e0c9-4437-8bd2-ed9c06971d98" name="Default" comment="" />
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
     <ignored path="$PROJECT_DIR$/tmp/" />
@@ -22,9 +18,11 @@
       <file leaf-file-name="index.vue" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/views/clinicdata/index.vue">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="372">
-              <caret line="191" column="13" lean-forward="true" selection-start-line="191" selection-start-column="13" selection-end-line="191" selection-end-column="13" />
-              <folding />
+            <state relative-caret-position="855">
+              <caret line="204" column="13" lean-forward="false" selection-start-line="204" selection-start-column="13" selection-end-line="204" selection-end-column="13" />
+              <folding>
+                <marker date="1515775019281" expanded="true" signature="11252:11265" ph="..." />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -53,8 +51,15 @@
         <entry file="file://$PROJECT_DIR$/src/api/clinic.js">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="-984">
-              <caret line="16" column="24" lean-forward="true" selection-start-line="16" selection-start-column="24" selection-end-line="16" selection-end-column="24" />
-              <folding />
+              <caret line="16" column="24" lean-forward="false" selection-start-line="16" selection-start-column="24" selection-end-line="16" selection-end-column="24" />
+              <folding>
+                <marker date="1515775018954" expanded="true" signature="1430:1546" ph="{...}" />
+                <marker date="1515775018954" expanded="true" signature="1449:1543" ph="{&quot;url&quot;: '/Clinic_label/getClinicLabel'...}" />
+                <marker date="1515775018954" expanded="true" signature="1584:1811" ph="{...}" />
+                <marker date="1515775018954" expanded="true" signature="1601:1738" ph="{...}" />
+                <marker date="1515775018954" expanded="true" signature="1677:1734" ph="[...]" />
+                <marker date="1515775018954" expanded="true" signature="1701:1733" ph="{...}" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -330,15 +335,15 @@
       <workItem from="1513602810212" duration="8084000" />
       <workItem from="1514300075456" duration="119000" />
       <workItem from="1514992526326" duration="177000" />
-      <workItem from="1515772035716" duration="2256000" />
+      <workItem from="1515772035716" duration="2849000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="55415000" />
+    <option name="totallyTimeSpent" value="56008000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1382" height="744" extended-state="0" />
+    <frame x="-8" y="-8" width="1382" height="744" extended-state="1" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.16517857" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -730,16 +735,25 @@
     <entry file="file://$PROJECT_DIR$/src/api/clinic.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-984">
-          <caret line="16" column="24" lean-forward="true" selection-start-line="16" selection-start-column="24" selection-end-line="16" selection-end-column="24" />
-          <folding />
+          <caret line="16" column="24" lean-forward="false" selection-start-line="16" selection-start-column="24" selection-end-line="16" selection-end-column="24" />
+          <folding>
+            <marker date="1515775018954" expanded="true" signature="1430:1546" ph="{...}" />
+            <marker date="1515775018954" expanded="true" signature="1449:1543" ph="{&quot;url&quot;: '/Clinic_label/getClinicLabel'...}" />
+            <marker date="1515775018954" expanded="true" signature="1584:1811" ph="{...}" />
+            <marker date="1515775018954" expanded="true" signature="1601:1738" ph="{...}" />
+            <marker date="1515775018954" expanded="true" signature="1677:1734" ph="[...]" />
+            <marker date="1515775018954" expanded="true" signature="1701:1733" ph="{...}" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/views/clinicdata/index.vue">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="372">
-          <caret line="191" column="13" lean-forward="true" selection-start-line="191" selection-start-column="13" selection-end-line="191" selection-end-column="13" />
-          <folding />
+        <state relative-caret-position="855">
+          <caret line="204" column="13" lean-forward="false" selection-start-line="204" selection-start-column="13" selection-end-line="204" selection-end-column="13" />
+          <folding>
+            <marker date="1515775019281" expanded="true" signature="11252:11265" ph="..." />
+          </folding>
         </state>
       </provider>
     </entry>

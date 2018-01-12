@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <el-form :inline="true" ref="form" :model="form" label-width="100px">
+    <!-- <el-form :inline="true" ref="form" :model="form" label-width="100px">
       <el-row>
         <el-col :span="24">
           <el-form-item label="姓名：">
@@ -11,7 +11,7 @@
           </el-form-item>
         </el-col>
       </el-row>
-    </el-form>
+    </el-form> -->
     <el-table :data="doctorList" v-loading.body="listLoading" element-loading-text="Loading" border fit highlight-current-row>
       <el-table-column align="center" label='序号' width="95">
         <template slot-scope="scope">
@@ -56,9 +56,6 @@
       return {
         doctorList: [],
         listLoading: true,
-        form: {
-          name: ''
-        }
       }
     },
     filters: {
@@ -117,9 +114,6 @@
       },
       handleEdite(row) {
         this.$router.push({path: '/resource/doctorList/doctorDetail', query: {id: row.doctor_id}})
-      },
-      onSearch() {
-
       }
     }
   }

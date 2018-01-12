@@ -10,11 +10,12 @@
             :file-list="imgList"
             list-type="picture-card"
             :on-preview="handlePictureCardPreview"
-            :on-remove="handleRemove"
             :on-success="handleSuccess"
+            :on-remove="handleRemove"
             :before-upload="beforeUpload"
             :on-change="fileChange">
-            <i class="el-icon-plus"></i>
+            <i class="el-icon-plus" v-if="!isEdit"></i>
+            <el-button size="small" type="primary" class="clickBtn" v-if="isEdit">重新上传</el-button>
         </el-upload>
         <el-dialog :visible.sync="dialogVisible">
           <img width="100%" :src="dialogImageUrl" alt="">
@@ -34,6 +35,10 @@ export default {
       default: function() {
         return []
       }
+    },
+    isEdit: {
+      type: Boolean,
+      default: false
     }
   },
   data() {

@@ -8,7 +8,7 @@
     <el-dropdown class="avatar-container">
       <div class="avatar-wrapper">
         <div class="user-name">{{name}}</div>
-        <el-badge is-dot>
+        <el-badge>
           <img class="user-avatar" :src="head">
         </el-badge>
         <i class="el-icon-caret-bottom"></i>
@@ -19,7 +19,7 @@
             首页
           </el-dropdown-item>
         </router-link>
-        <router-link class="inlineBlock" to="/setting/index">
+        <!-- <router-link class="inlineBlock" to="/setting/index">
           <el-dropdown-item>
             <span class="news">
               <el-badge is-dot>
@@ -27,7 +27,7 @@
               </el-badge>
             </span>
           </el-dropdown-item>
-        </router-link>
+        </router-link> -->
         <el-dropdown-item divided>
           <span @click="logout" style="display:block;">退出</span>
         </el-dropdown-item>
