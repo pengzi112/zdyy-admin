@@ -157,7 +157,7 @@
         getArea(0).then(response => {
           if (response.errorCode === 200) {
             this.provinceList = response.result;
-          } 
+          }
         });
         getInfo().then(response => {
           let data = response.result;
@@ -181,11 +181,14 @@
             this.form.clinic_logo = data.clinic_logo;
             this.form.clinic_logoRule.push(data.clinic_logo);
             let clinic_imgStr = data.clinic_img;
-            let imgArr = clinic_imgStr.split(',');
-            for (var i = 0; i < imgArr.length; i++) {
-              let imgObj = {url: imgArr[i]};
-              this.imgList.push(imgObj);
-              this.form.clinic_img.push(imgArr[i]);
+            if(clinic_imgStr !== '') {
+              let imgArr = clinic_imgStr.split(',');
+              console.log(imgArr.length);
+              for (var i = 0; i < imgArr.length; i++) {
+                let imgObj = {url: imgArr[i]};
+                this.imgList.push(imgObj);
+                this.form.clinic_img.push(imgArr[i]);
+              }
             }
             let logo = {url: data.clinic_logo};
             this.logoList.push(logo);
