@@ -193,7 +193,6 @@
             this.form.clinic_logo = data.clinic_logo;
             this.form.clinic_logoRule.push(data.clinic_logo);
             let clinic_imgStr = data.clinic_img;
-<<<<<<< HEAD
             if(clinic_imgStr !== '') {
               let imgArr = clinic_imgStr.split(',');
               console.log(imgArr.length);
@@ -205,11 +204,9 @@
             }
             let logo = {url: data.clinic_logo};
             this.logoList.push(logo);
-=======
             this.imgList = clinic_imgStr.split(',');
             this.form.clinic_imgRule = this.imgList;
             this.logoList = data.clinic_logo;
->>>>>>> temp
           } else {
             this.isEdit = false;
             this.uploaded_logo = true;
